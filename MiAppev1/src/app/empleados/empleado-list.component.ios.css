@@ -1,0 +1,47 @@
+.platform-text {
+  color: blue;
+  font-size: 18;
+  font-weight: bold;
+  margin: 12 16;
+}
+
+.item {
+  padding: 12 16;
+  background-color: #ffffff;
+  border-bottom-width: 1;
+  border-bottom-color: #c8c7cc;
+}
+
+.item-icon {
+  width: 40;
+  margin-right: 16;
+  font-size: 28;
+  color: #4FC3F7;
+  text-align: center;
+}
+
+.item-name {
+  font-size: 16;
+  color: #000000;
+}
+
+.detail-icon {
+  margin: 32 0 16 0;
+  horizontal-align: center;
+  font-size: 72;
+  color: #4FC3F7;
+  text-align: center;
+}
+
+.detail-name {
+  font-size: 22;
+  font-weight: bold;
+  color: #4FC3F7;
+  text-align: center;
+}
+
+.detail-id {
+  font-size: 14;
+  color: #8e8e93;
+  text-align: center;
+}
