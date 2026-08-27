@@ -39,4 +39,9 @@
 
     <style name="NativeScriptToolbarStyle" parent="NativeScriptToolbarStyleBase">
     </style>
+
+
+    <style name="AppSplashTheme" parent="LaunchScreenThemeBase">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>

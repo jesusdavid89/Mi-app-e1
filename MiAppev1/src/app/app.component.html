@@ -75,5 +75,22 @@
 
   <GridLayout tkMainContent>
     <page-router-outlet></page-router-outlet>
+
+    <GridLayout
+      #fabHome
+      class="fab-home"
+      horizontalAlignment="right"
+      verticalAlignment="bottom"
+      [visibility]="mostrarFab ? 'visible' : 'collapse'"
+      (doubleTap)="onFabIrAlHome()"
+      (longPress)="onFabIrAlHome()"
+    >
+      <Label
+        class="fas fab-home__icon"
+        text="&#xf015;"
+        horizontalAlignment="center"
+        verticalAlignment="center"
+      ></Label>
+    </GridLayout>
   </GridLayout>
 </RadSideDrawer>

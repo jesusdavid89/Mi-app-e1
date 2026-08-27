@@ -1,0 +1,42 @@
+.splash {
+  background-color: #272734;
+}
+
+.splash-marca {
+  horizontal-align: center;
+}
+
+.splash-marca__nombre {
+  font-size: 40;
+  font-weight: 300;
+  color: #ffffff;
+  letter-spacing: 0.12;
+  text-align: center;
+}
+
+.splash-marca__autor {
+  margin-top: 6;
+  font-size: 15;
+  font-weight: 200;
+  font-style: italic;
+  color: #9a9ab0;
+  letter-spacing: 0.2;
+  text-align: center;
+}
+
+.splash-panel {
+  margin: 40 48 0 48;
+}
+
+.splash-barra {
+  height: 6;
+  color: #65adf1;
+  background-color: #3d3d4e;
+}
+
+.splash-texto {
+  margin-top: 12;
+  font-size: 13;
+  color: #9a9ab0;
+  text-align: center;
+}

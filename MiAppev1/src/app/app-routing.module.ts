@@ -3,7 +3,11 @@ import { Routes } from '@angular/router'
 import { NativeScriptRouterModule } from '@nativescript/angular'
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/splash', pathMatch: 'full' },
+  {
+    path: 'splash',
+    loadChildren: () => import('~/app/splash/splash.module').then((m) => m.SplashModule),
+  },
   {
     path: 'home',
     loadChildren: () => import('~/app/home/home.module').then((m) => m.HomeModule),

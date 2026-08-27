@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { NavigationEnd, Router } from '@angular/router'
 import { RouterExtensions } from '@nativescript/angular'
 import {
@@ -7,20 +7,25 @@ import {
   SlideInOnTopTransition,
 } from 'nativescript-ui-sidedrawer'
 import { filter } from 'rxjs/operators'
-import { Application } from '@nativescript/core'
+import { Application, Color, View } from '@nativescript/core'
+
+const FAB_COLOR_NORMAL = '#4fc3f7'
+const FAB_COLOR_ACTIVO = '#ff7043'
 
 @Component({
   selector: 'ns-app',
   templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
+  @ViewChild('fabHome') fabHome: ElementRef
+
   private _activatedUrl: string
   private _sideDrawerTransition: DrawerTransitionBase
 
   constructor(private router: Router, private routerExtensions: RouterExtensions) {}
 
   ngOnInit(): void {
-    this._activatedUrl = '/home'
+    this._activatedUrl = '/splash'
     this._sideDrawerTransition = new SlideInOnTopTransition()
 
     this.router.events
@@ -32,8 +37,52 @@ export class AppComponent implements OnInit {
     return this._sideDrawerTransition
   }
 
+  get mostrarFab(): boolean {
+    return this._activatedUrl !== '/splash'
+  }
+
   isComponentSelected(url: string): boolean {
     return this._activatedUrl === url
+  }
+
+  onFabIrAlHome(): void {
+    this.cerrarDrawer()
+
+    this.animarFab().then(() => {
+      if (this._activatedUrl === '/home') {
+        return
+      }
+
+      this.routerExtensions.navigate(['/home'], {
+        clearHistory: true,
+        transition: {
+          name: 'fade',
+        },
+      })
+    })
+  }
+
+  private animarFab(): Promise<void> {
+    const fab = this.fabHome?.nativeElement as View
+
+    if (!fab) {
+      return Promise.resolve()
+    }
+
+    return fab
+      .animate({
+        backgroundColor: new Color(FAB_COLOR_ACTIVO),
+        scale: { x: 1.25, y: 1.25 },
+        duration: 180,
+      })
+      .then(() =>
+        fab.animate({
+          backgroundColor: new Color(FAB_COLOR_NORMAL),
+          scale: { x: 1, y: 1 },
+          duration: 180,
+        })
+      )
+      .then(() => undefined)
   }
 
   onNavItemTap(navItemRoute: string): void {
@@ -43,6 +92,10 @@ export class AppComponent implements OnInit {
       },
     })
 
+    this.cerrarDrawer()
+  }
+
+  private cerrarDrawer(): void {
     const sideDrawer = <RadSideDrawer>Application.getRootView()
     sideDrawer.closeDrawer()
   }

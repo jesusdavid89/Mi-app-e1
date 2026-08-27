@@ -7,7 +7,46 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf002;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout rows="auto, auto, auto, *" class="page__content">
+  <SearchBar
+    row="0"
+    class="search-bar"
+    hint="Buscar por nombre, cargo o área"
+    [(ngModel)]="consulta"
+    (ngModelChange)="buscar()"
+    (submit)="onSubmit($event)"
+  ></SearchBar>
+
+  <GridLayout row="1" columns="*, auto" class="search-filter">
+    <Label col="0" class="search-filter-label" text="Buscar solo por nombre" verticalAlignment="center"></Label>
+    <Switch col="1" [(ngModel)]="soloNombre" (ngModelChange)="buscar()"></Switch>
+  </GridLayout>
+
+  <Label row="2" class="search-summary" [text]="resumen"></Label>
+
+  <ListView row="3" class="results-list" [items]="resultados" (itemTap)="onItemTap($event)">
+    <ng-template let-empleado="item">
+      <FlexboxLayout class="result-item" flexDirection="row" alignItems="center">
+        <Label class="fas result-avatar" text="&#xf007;"></Label>
+
+        <FlexboxLayout class="result-body" flexDirection="column" flexGrow="1">
+          <Label class="result-name" [text]="empleado.name" textWrap="true"></Label>
+
+          <FlexboxLayout class="result-tags" flexDirection="row" flexWrap="wrap">
+            <Label class="result-tag" [text]="empleado.cargo"></Label>
+            <Label class="result-tag result-tag--area" [text]="empleado.area"></Label>
+          </FlexboxLayout>
+        </FlexboxLayout>
+
+        <Label class="fas result-chevron" text="&#xf054;"></Label>
+      </FlexboxLayout>
+    </ng-template>
+  </ListView>
+
+  <Label
+    row="3"
+    class="search-empty"
+    text="No se encontraron empleados"
+    [visibility]="resultados.length ? 'collapse' : 'visible'"
+  ></Label>
 </GridLayout>

@@ -25,23 +25,24 @@
   color: #000000;
 }
 
-.detail-icon {
-  margin: 32 0 16 0;
-  horizontal-align: center;
-  font-size: 72;
-  color: #4FC3F7;
-  text-align: center;
-}
-
-.detail-name {
-  font-size: 22;
-  font-weight: bold;
-  color: #4FC3F7;
-  text-align: center;
-}
-
-.detail-id {
-  font-size: 14;
+.item-cargo {
+  font-size: 13;
   color: #8e8e93;
+}
+
+.item-chevron {
+  font-size: 14;
+  color: #bdbdbd;
+}
+
+.empleado-list {
+  background-color: transparent;
+  separator-color: transparent;
+}
+
+.item-edit {
+  width: 44;
+  font-size: 18;
+  color: #4FC3F7;
   text-align: center;
 }

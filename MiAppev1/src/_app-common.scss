@@ -35,3 +35,18 @@
 .nt-drawer__header-image {
   color: const(grey);
 }
+
+.fab-home {
+  width: 56;
+  height: 56;
+  margin: 0 16 24 0;
+  background-color: #4fc3f7;
+  border-radius: 28;
+  android-elevation: 6;
+}
+
+.fab-home__icon {
+  font-size: 22;
+  color: #ffffff;
+  text-align: center;
+}
