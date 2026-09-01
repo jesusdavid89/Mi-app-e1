@@ -1,0 +1,95 @@
+<ActionBar class="action-bar">
+  <NavigationButton text="Atrás" android.systemIcon="ic_menu_back" (tap)="cancelar()"></NavigationButton>
+  <Label class="action-bar-title" text="Nuevo empleado"></Label>
+</ActionBar>
+
+<ScrollView class="page-content">
+  <StackLayout class="form">
+    <Label class="form-label" text="Nombre completo"></Label>
+    <TextField
+      class="form-input"
+      [(ngModel)]="name"
+      [ngModelOptions]="{ standalone: true }"
+      (textChange)="limpiarErrores()"
+      autocapitalizationType="words"
+      autocorrect="false"
+      hint="Nombre y apellidos"
+    ></TextField>
+
+    <Label class="form-label" text="Cargo"></Label>
+    <Button class="form-select" [text]="cargoTexto" (tap)="elegirCargo()"></Button>
+
+    <Label class="form-label" text="Área"></Label>
+    <Button class="form-select" [text]="areaTexto" (tap)="elegirArea()"></Button>
+
+    <Label class="form-label" text="Número de cédula"></Label>
+    <TextField
+      class="form-input"
+      [(ngModel)]="cedula"
+      [ngModelOptions]="{ standalone: true }"
+      (textChange)="limpiarErrores()"
+      keyboardType="number"
+      hint="1098765432"
+    ></TextField>
+
+    <Label class="form-label" text="Edad"></Label>
+    <TextField
+      class="form-input"
+      [(ngModel)]="edad"
+      [ngModelOptions]="{ standalone: true }"
+      (textChange)="limpiarErrores()"
+      keyboardType="number"
+      hint="Entre 18 y 99"
+    ></TextField>
+
+    <Label class="form-label" text="Sexo"></Label>
+    <Button class="form-select" [text]="sexoTexto" (tap)="elegirSexo()"></Button>
+
+    <Label class="form-label" text="Teléfono"></Label>
+    <TextField
+      #telefonoModel="ngModel"
+      class="form-input"
+      [(ngModel)]="telefono"
+      [ngModelOptions]="{ standalone: true }"
+      (textChange)="limpiarErrores()"
+      [maxLongitudTelefono]="maxDigitos"
+      keyboardType="phone"
+      hint="300 123 4567"
+    ></TextField>
+    <Label class="form-ayuda" [text]="'Máximo ' + maxDigitos + ' dígitos'"></Label>
+
+    <Label class="form-label" text="Correo electrónico"></Label>
+    <TextField
+      class="form-input"
+      [(ngModel)]="email"
+      [ngModelOptions]="{ standalone: true }"
+      (textChange)="limpiarErrores()"
+      keyboardType="email"
+      autocorrect="false"
+      autocapitalizationType="none"
+      hint="correo@dominio.com"
+    ></TextField>
+
+    <StackLayout class="form-errores" [visibility]="errores.length ? 'visible' : 'collapse'">
+      <Label
+        *ngFor="let mensaje of errores"
+        class="form-error"
+        [text]="'• ' + mensaje"
+        textWrap="true"
+      ></Label>
+    </StackLayout>
+
+    <StackLayout class="form-cargando" [visibility]="guardando ? 'visible' : 'collapse'">
+      <ActivityIndicator busy="true"></ActivityIndicator>
+      <Label class="form-ayuda" text="Enviando al servidor..." horizontalAlignment="center"></Label>
+    </StackLayout>
+
+    <Button
+      class="form-guardar"
+      text="Crear empleado"
+      (tap)="guardar()"
+      [isEnabled]="!guardando"
+    ></Button>
+    <Button class="form-cancelar" text="Cancelar" (tap)="cancelar()"></Button>
+  </StackLayout>
+</ScrollView>

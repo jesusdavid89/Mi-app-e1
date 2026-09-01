@@ -1,0 +1,156 @@
+.inicio {
+  padding: 16;
+}
+
+.inicio__titulo {
+  font-size: 18;
+  font-weight: bold;
+  color: #212121;
+}
+
+.inicio__tarjeta {
+  margin-top: 12;
+  padding: 16;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 12;
+}
+
+.inicio__emoji {
+  width: 52;
+  font-size: 34;
+  text-align: center;
+}
+
+.inicio__nombre {
+  font-size: 18;
+  font-weight: bold;
+  color: #212121;
+}
+
+.inicio__cargo {
+  margin-top: 2;
+  font-size: 13;
+  color: #757575;
+}
+
+.inicio__acciones {
+  margin-top: 16;
+}
+
+.inicio__boton {
+  margin: 4;
+  padding: 10 16;
+  font-size: 14;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.inicio__boton--secundario {
+  color: #0277bd;
+  background-color: #e1f5fe;
+}
+
+.inicio__sin-lectura {
+  margin-top: 12;
+  padding: 16;
+  background-color: #f5f5f5;
+  border-radius: 12;
+}
+
+.inicio__sin-lectura-texto {
+  font-size: 14;
+  color: #757575;
+  text-align: center;
+}
+
+.historial__encabezado {
+  padding: 20 16 8 16;
+}
+
+.historial__titulo {
+  font-size: 16;
+  font-weight: bold;
+  color: #212121;
+}
+
+.historial__limpiar {
+  padding: 6 14;
+  font-size: 13;
+  color: #c62828;
+  background-color: #ffebee;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.historial__lista {
+  separator-color: transparent;
+  background-color: transparent;
+}
+
+.historial__item {
+  padding: 12 16;
+  margin: 4 12;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 8;
+}
+
+.historial__emoji {
+  width: 40;
+  margin-right: 8;
+  font-size: 22;
+  text-align: center;
+}
+
+.historial__nombre {
+  font-size: 15;
+  font-weight: bold;
+  color: #212121;
+}
+
+.historial__cargo {
+  margin-top: 2;
+  font-size: 12;
+  color: #757575;
+}
+
+.historial__quitar {
+  width: 34;
+  padding: 4;
+  font-size: 15;
+  color: #bdbdbd;
+  text-align: center;
+}
+
+.historial__actual {
+  font-size: 10;
+  font-weight: bold;
+  color: #2e7d32;
+  text-align: center;
+}
+
+.historial__vacio {
+  padding: 24;
+  vertical-align: center;
+}
+
+.historial__emoji-vacio {
+  font-size: 40;
+  text-align: center;
+  opacity: 0.35;
+}
+
+.historial__vacio-texto {
+  margin: 14 0 18 0;
+  font-size: 14;
+  color: #757575;
+  text-align: center;
+}

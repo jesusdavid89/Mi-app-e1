@@ -1,0 +1,82 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Favoritos" colSpan="2"></Label>
+
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout rows="auto, *" class="page__content">
+  <Label row="0" class="fav-resumen" [text]="resumen" [visibility]="error ? 'collapse' : 'visible'"></Label>
+
+  <ListView
+    row="1"
+    class="fav-lista"
+    [items]="favoritos"
+    (itemTap)="onItemTap($event)"
+    [visibility]="!error && favoritos.length ? 'visible' : 'collapse'"
+  >
+    <ng-template let-empleado="item">
+      <GridLayout rows="auto, auto, auto" columns="auto, *, auto" class="fav-item">
+        <Label row="0" rowSpan="2" col="0" class="fas fav-avatar" text="&#xf007;" verticalAlignment="center"></Label>
+
+        <Label row="0" col="1" class="fav-nombre" [text]="empleado.name" textWrap="true"></Label>
+        <Label row="1" col="1" class="fav-cargo" [text]="empleado.cargo + ' · ' + empleado.area" textWrap="true"></Label>
+
+        <Label
+          row="0"
+          rowSpan="2"
+          col="2"
+          class="fas fav-estrella"
+          text="&#xf005;"
+          verticalAlignment="center"
+          (tap)="quitarFavorito(empleado)"
+        ></Label>
+
+        <GridLayout row="2" col="0" colSpan="3" columns="*, auto" class="fav-acciones">
+          <Label
+            col="0"
+            class="fav-leyendo"
+            text="Leyendo ahora"
+            verticalAlignment="center"
+            [visibility]="estaLeyendo(empleado) ? 'visible' : 'collapse'"
+          ></Label>
+
+          <Button
+            col="1"
+            class="fav-leer"
+            [class.fav-leer--activo]="estaLeyendo(empleado)"
+            [text]="estaLeyendo(empleado) ? '📖 Leyendo' : '📖 Leer ahora'"
+            (tap)="leerAhora(empleado)"
+          ></Button>
+        </GridLayout>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+
+  <StackLayout row="1" class="fav-estado" [visibility]="cargando ? 'visible' : 'collapse'">
+    <ActivityIndicator busy="true"></ActivityIndicator>
+    <Label class="fav-estado-texto" text="Consultando el servidor..."></Label>
+  </StackLayout>
+
+  <StackLayout
+    row="1"
+    class="fav-estado"
+    [visibility]="!error && !cargando && !favoritos.length ? 'visible' : 'collapse'"
+  >
+    <Label class="far fav-estado-icono" text="&#xf005;"></Label>
+    <Label
+      class="fav-estado-texto"
+      text="Todavía no tienes favoritos. Márcalos con la estrella en la pantalla Search."
+      textWrap="true"
+    ></Label>
+    <Button class="fav-estado-boton" text="Ir a Search" (tap)="irABuscar()"></Button>
+  </StackLayout>
+
+  <StackLayout row="1" class="fav-estado" [visibility]="error ? 'visible' : 'collapse'">
+    <Label class="fas fav-estado-icono fav-estado-icono--error" text="&#xf071;"></Label>
+    <Label class="fav-estado-texto" [text]="error" textWrap="true"></Label>
+    <Button class="fav-estado-boton" text="Reintentar" (tap)="cargar()"></Button>
+  </StackLayout>
+</GridLayout>

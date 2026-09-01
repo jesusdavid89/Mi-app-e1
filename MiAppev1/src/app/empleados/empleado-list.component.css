@@ -1,0 +1,34 @@
+.action-bar-nuevo {
+  font-size: 20;
+  text-align: center;
+}
+
+.lista-estado {
+  padding: 24;
+  vertical-align: center;
+}
+
+.lista-estado-icono {
+  font-size: 34;
+  color: #ef6c00;
+  text-align: center;
+}
+
+.lista-estado-texto {
+  margin-top: 12;
+  font-size: 14;
+  color: #616161;
+  text-align: center;
+}
+
+.lista-estado-boton {
+  margin-top: 16;
+  padding: 8 20;
+  font-size: 14;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  horizontal-align: center;
+  android-elevation: 0;
+  text-transform: none;
+}

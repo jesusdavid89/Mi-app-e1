@@ -5,6 +5,7 @@ import { EmpleadosRoutingModule } from './empleados-routing.module';
 import { EmpleadoListComponent } from './empleado-list.component';
 import { EmpleadoDetailComponent } from './empleado-detail.component';
 import { EmpleadoEditarComponent } from './empleado-editar.component';
+import { EmpleadoNuevoComponent } from './empleado-nuevo.component';
 import { TelefonoMaxLengthDirective } from './telefono-max-length.directive';
 
 registerElement('PullToRefresh', () => PullToRefresh);
@@ -15,6 +16,7 @@ registerElement('PullToRefresh', () => PullToRefresh);
     EmpleadoListComponent,
     EmpleadoDetailComponent,
     EmpleadoEditarComponent,
+    EmpleadoNuevoComponent,
     TelefonoMaxLengthDirective,
   ],
   schemas: [NO_ERRORS_SCHEMA],

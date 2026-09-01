@@ -1,0 +1,107 @@
+.fav-resumen {
+  padding: 12 16 4 16;
+  font-size: 13;
+  color: #757575;
+}
+
+.fav-lista {
+  separator-color: transparent;
+  background-color: transparent;
+}
+
+.fav-item {
+  padding: 12 16;
+  margin: 4 12;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 8;
+}
+
+.fav-avatar {
+  width: 40;
+  margin-right: 12;
+  font-size: 26;
+  color: #4fc3f7;
+  text-align: center;
+}
+
+.fav-nombre {
+  font-size: 16;
+  font-weight: bold;
+  color: #212121;
+}
+
+.fav-cargo {
+  margin-top: 2;
+  font-size: 13;
+  color: #757575;
+}
+
+.fav-estrella {
+  width: 34;
+  padding: 4;
+  font-size: 18;
+  color: #fbc02d;
+  text-align: center;
+}
+
+.fav-acciones {
+  margin-top: 10;
+}
+
+.fav-leyendo {
+  font-size: 12;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.fav-leer {
+  padding: 8 14;
+  font-size: 14;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.fav-leer--activo {
+  color: #1b5e20;
+  background-color: #c8e6c9;
+}
+
+.fav-estado {
+  padding: 32 24;
+  vertical-align: center;
+}
+
+.fav-estado-icono {
+  font-size: 40;
+  color: #bdbdbd;
+  text-align: center;
+}
+
+.fav-estado-icono--error {
+  color: #ef6c00;
+}
+
+.fav-estado-texto {
+  margin-top: 14;
+  font-size: 14;
+  color: #616161;
+  text-align: center;
+}
+
+.fav-estado-boton {
+  margin-top: 18;
+  padding: 8 20;
+  font-size: 14;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  horizontal-align: center;
+  android-elevation: 0;
+  text-transform: none;
+}

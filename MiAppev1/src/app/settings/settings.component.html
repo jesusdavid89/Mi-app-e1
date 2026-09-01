@@ -7,7 +7,74 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf013;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<ScrollView class="page__content">
+  <StackLayout class="config">
+    <Label class="config__titulo" text="Usuario"></Label>
+    <Label
+      class="config__ayuda"
+      text="Nombre guardado en el dispositivo. Se edita en la pantalla Perfil del menú lateral."
+      textWrap="true"
+    ></Label>
+
+    <Label class="config__etiqueta" text="Nombre guardado"></Label>
+    <Label class="config__valor" [text]="nombreEstadoTexto" textWrap="true"></Label>
+
+    <StackLayout class="hr"></StackLayout>
+
+    <Label class="config__titulo config__titulo--seccion" text="Servidor del API"></Label>
+    <Label
+      class="config__ayuda"
+      text="Pega aquí la URL que te entrega ngrok. Se guarda en el dispositivo, así que no hay que recompilar cuando el túnel cambie de dirección."
+      textWrap="true"
+    ></Label>
+
+    <TextField
+      class="config__input"
+      hint="https://algo.ngrok-free.app"
+      autocapitalizationType="none"
+      autocorrect="false"
+      keyboardType="url"
+      [(ngModel)]="url"
+    ></TextField>
+
+    <GridLayout columns="*, *" class="config__acciones">
+      <Button col="0" class="config__boton" text="Guardar" (tap)="guardar()"></Button>
+      <Button
+        col="1"
+        class="config__boton config__boton--secundario"
+        text="Probar conexión"
+        (tap)="probar()"
+        [isEnabled]="!probando"
+      ></Button>
+    </GridLayout>
+
+    <Label class="config__etiqueta" text="URL en uso"></Label>
+    <Label class="config__valor" [text]="estadoTexto" textWrap="true"></Label>
+
+    <StackLayout class="config__resultado" [visibility]="probando ? 'visible' : 'collapse'">
+      <ActivityIndicator busy="true"></ActivityIndicator>
+      <Label class="config__resultado-texto" text="Probando la conexión..." textWrap="true"></Label>
+    </StackLayout>
+
+    <Label
+      class="config__resultado-texto"
+      [class.config__resultado-texto--ok]="pruebaExitosa"
+      [class.config__resultado-texto--error]="!pruebaExitosa"
+      [text]="resultadoPrueba"
+      textWrap="true"
+      [visibility]="!probando && resultadoPrueba ? 'visible' : 'collapse'"
+    ></Label>
+
+    <StackLayout class="hr"></StackLayout>
+
+    <Label class="config__etiqueta" text="Atajos"></Label>
+
+    <Button
+      class="config__boton config__boton--secundario"
+      text="Usar backend local (emulador)"
+      (tap)="usarEmulador()"
+    ></Button>
+
+    <Button class="config__boton config__boton--peligro" text="Borrar URL" (tap)="borrar()"></Button>
+  </StackLayout>
+</ScrollView>

@@ -1,0 +1,87 @@
+.form {
+  padding: 16;
+}
+
+.form-label {
+  margin-top: 14;
+  font-size: 12;
+  color: #9e9e9e;
+  text-transform: uppercase;
+}
+
+.form-input {
+  margin-top: 4;
+  padding: 10 12;
+  font-size: 16;
+  color: #212121;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 8;
+  placeholder-color: #9e9e9e;
+}
+
+.form-select {
+  margin: 4 0 0 0;
+  padding: 10 12;
+  font-size: 16;
+  color: #212121;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 8;
+  horizontal-align: stretch;
+  text-align: left;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.form-ayuda {
+  margin-top: 4;
+  font-size: 12;
+  color: #9e9e9e;
+}
+
+.form-errores {
+  margin-top: 16;
+  padding: 12;
+  background-color: #ffebee;
+  border-radius: 8;
+}
+
+.form-error {
+  font-size: 13;
+  color: #c62828;
+}
+
+.form-cargando {
+  margin-top: 16;
+}
+
+.form-guardar {
+  margin-top: 20;
+  padding: 12 16;
+  font-size: 16;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.form-guardar:disabled {
+  background-color: #cfd8dc;
+  color: #90a4ae;
+}
+
+.form-cancelar {
+  margin-top: 8;
+  padding: 12 16;
+  font-size: 16;
+  color: #0277bd;
+  background-color: #e1f5fe;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}

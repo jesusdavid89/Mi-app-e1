@@ -1,0 +1,105 @@
+.perfil {
+  padding: 16;
+}
+
+.perfil__tarjeta {
+  padding: 24 16;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 12;
+}
+
+.perfil__avatar {
+  font-size: 52;
+  color: #4fc3f7;
+  text-align: center;
+}
+
+.perfil__nombre {
+  margin-top: 12;
+  font-size: 20;
+  font-weight: bold;
+  color: #212121;
+  text-align: center;
+}
+
+.perfil__estado {
+  margin-top: 4;
+  font-size: 13;
+  color: #757575;
+  text-align: center;
+}
+
+.perfil__etiqueta {
+  margin-top: 24;
+  font-size: 12;
+  color: #9e9e9e;
+  text-transform: uppercase;
+}
+
+.perfil__input {
+  margin-top: 6;
+  padding: 10 12;
+  font-size: 16;
+  color: #212121;
+  background-color: #ffffff;
+  border-width: 1;
+  border-color: #e0e0e0;
+  border-radius: 8;
+  placeholder-color: #9e9e9e;
+}
+
+.perfil__ayuda {
+  margin-top: 8;
+  font-size: 12;
+  color: #9e9e9e;
+}
+
+.perfil__boton {
+  margin-top: 14;
+  padding: 12 16;
+  font-size: 15;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0277bd;
+  border-radius: 8;
+  android-elevation: 0;
+  text-transform: none;
+}
+
+.perfil__boton:disabled {
+  background-color: #cfd8dc;
+  color: #90a4ae;
+}
+
+.perfil__boton--secundario {
+  margin-top: 8;
+  color: #0277bd;
+  background-color: #e1f5fe;
+}
+
+.perfil__boton--peligro {
+  color: #c62828;
+  background-color: #ffebee;
+}
+
+.perfil__mensaje {
+  margin-top: 14;
+  font-size: 14;
+  text-align: center;
+}
+
+.perfil__mensaje--ok {
+  color: #2e7d32;
+}
+
+.perfil__mensaje--error {
+  color: #c62828;
+}
+
+.perfil__separador {
+  margin-top: 24;
+  height: 1;
+  background-color: #e0e0e0;
+}

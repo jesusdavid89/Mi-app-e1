@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgModel } from '@angular/forms';
 import { RouterExtensions } from '@nativescript/angular';
 import { Toasty, ToastDuration, ToastPosition } from '@triniwiz/nativescript-toasty';
-import { EmpleadoService, Empleado } from '../empleado.service';
+import { Empleado } from '../empleado.service';
+import { EmpleadoApiService } from '../empleado-api.service';
 import { LONGITUD_MAXIMA_TELEFONO } from './telefono-max-length.directive';
 
 @Component({
@@ -70,17 +71,22 @@ export class EmpleadoEditarComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
-    private empleadoService: EmpleadoService
+    private empleadoApi: EmpleadoApiService
   ) {}
 
   ngOnInit(): void {
     const id = +this.route.snapshot.params['id'];
-    this.empleado = this.empleadoService.getEmpleado(id);
 
-    if (this.empleado) {
-      this.email = this.empleado.email;
-      this.telefono = this.empleado.telefono;
-    }
+    this.empleadoApi.obtener(id).subscribe({
+      next: (empleado) => {
+        this.empleado = empleado;
+        this.email = empleado.email;
+        this.telefono = empleado.telefono;
+      },
+      error: () => {
+        this.avisar('No se pudo cargar el empleado desde el servidor');
+      },
+    });
   }
 
   onGuardarTap(): void {
@@ -93,13 +99,20 @@ export class EmpleadoEditarComponent implements OnInit {
       return;
     }
 
-    this.empleadoService.actualizarEmpleado(this.empleado.id, {
-      email: this.email.trim(),
-      telefono: this.telefono.trim(),
-    });
-
-    this.avisar('Información actualizada exitosamente');
-    this.routerExtensions.back();
+    this.empleadoApi
+      .actualizar(this.empleado.id, {
+        email: this.email.trim(),
+        telefono: this.telefono.trim(),
+      })
+      .subscribe({
+        next: () => {
+          this.avisar('Información actualizada exitosamente');
+          this.routerExtensions.back();
+        },
+        error: (error) => {
+          this.avisar(error?.error?.error || 'No se pudo guardar en el servidor');
+        },
+      });
   }
 
   onCancelarTap(): void {

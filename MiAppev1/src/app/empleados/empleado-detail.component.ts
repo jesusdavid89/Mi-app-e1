@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterExtensions } from '@nativescript/angular';
 import { Dialogs, Utils } from '@nativescript/core';
-import { EmpleadoService, Empleado } from '../empleado.service';
+import { Empleado } from '../empleado.service';
+import { EmpleadoApiService } from '../empleado-api.service';
 
 @Component({
   selector: 'ns-empleado-detail',
@@ -84,12 +85,19 @@ export class EmpleadoDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
-    private empleadoService: EmpleadoService
+    private empleadoApi: EmpleadoApiService
   ) {}
 
   ngOnInit(): void {
     const id = +this.route.snapshot.params['id'];
-    this.empleado = this.empleadoService.getEmpleado(id);
+    this.empleadoApi.obtener(id).subscribe({
+      next: (empleado) => {
+        this.empleado = empleado;
+      },
+      error: () => {
+        this.empleado = undefined;
+      },
+    });
   }
 
   get cedulaFormateada(): string {

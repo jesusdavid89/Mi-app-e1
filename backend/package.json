@@ -1,0 +1,22 @@
+{
+  "name": "miappev1-backend",
+  "version": "1.0.0",
+  "description": "Webservice REST",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "express",
+    "api",
+    "empleados"
+  ],
+  "author": "Jesus David Quintero Llanos",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}

@@ -1,0 +1,72 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Perfil" colSpan="2"></Label>
+
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView class="page__content">
+  <StackLayout class="perfil">
+    <StackLayout class="perfil__tarjeta">
+      <Label class="fas perfil__avatar" text="&#xf2bd;"></Label>
+      <Label class="perfil__nombre" [text]="nombreParaMostrar" textWrap="true"></Label>
+      <Label
+        class="perfil__estado"
+        [text]="estaConfigurado ? 'Guardado en el dispositivo' : 'Todavía no has guardado un nombre'"
+        textWrap="true"
+      ></Label>
+    </StackLayout>
+
+    <Label class="perfil__etiqueta" text="Nombre de usuario"></Label>
+
+    <TextField
+      class="perfil__input"
+      hint="Escribe tu nombre"
+      autocapitalizationType="words"
+      autocorrect="false"
+      returnKeyType="done"
+      [(ngModel)]="nombre"
+      (returnPress)="onReturnPress($event)"
+    ></TextField>
+
+    <Label
+      class="perfil__ayuda"
+      text="Se guarda en el dispositivo con ApplicationSettings, así que sigue ahí al cerrar y volver a abrir la app."
+      textWrap="true"
+    ></Label>
+
+    <Button
+      class="perfil__boton"
+      text="Guardar"
+      (tap)="guardar()"
+      [isEnabled]="puedeGuardar"
+    ></Button>
+
+    <Button
+      class="perfil__boton perfil__boton--secundario"
+      text="Descartar cambios"
+      (tap)="descartar()"
+      [visibility]="puedeGuardar ? 'visible' : 'collapse'"
+    ></Button>
+
+    <Label
+      class="perfil__mensaje"
+      [class.perfil__mensaje--ok]="!mensajeEsError"
+      [class.perfil__mensaje--error]="mensajeEsError"
+      [text]="mensaje"
+      textWrap="true"
+      [visibility]="mensaje ? 'visible' : 'collapse'"
+    ></Label>
+
+    <StackLayout class="perfil__separador" [visibility]="estaConfigurado ? 'visible' : 'collapse'"></StackLayout>
+
+    <Button
+      class="perfil__boton perfil__boton--peligro"
+      text="Borrar nombre guardado"
+      (tap)="borrar()"
+      [visibility]="estaConfigurado ? 'visible' : 'collapse'"
+    ></Button>
+  </StackLayout>
+</ScrollView>

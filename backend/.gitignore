@@ -1,0 +1,8 @@
+node_modules/
+*.log
+.env
+
+
+empleados.db
+empleados.db-shm
+empleados.db-wal

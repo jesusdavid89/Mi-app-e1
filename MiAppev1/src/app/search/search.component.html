@@ -8,23 +8,49 @@
 </ActionBar>
 
 <GridLayout rows="auto, auto, auto, *" class="page__content">
-  <SearchBar
-    row="0"
-    class="search-bar"
-    hint="Buscar por nombre, cargo o área"
-    [(ngModel)]="consulta"
-    (ngModelChange)="buscar()"
-    (submit)="onSubmit($event)"
-  ></SearchBar>
 
-  <GridLayout row="1" columns="*, auto" class="search-filter">
-    <Label col="0" class="search-filter-label" text="Buscar solo por nombre" verticalAlignment="center"></Label>
-    <Switch col="1" [(ngModel)]="soloNombre" (ngModelChange)="buscar()"></Switch>
+  <GridLayout row="0" columns="*, auto, auto" class="search-form">
+    <TextField
+      col="0"
+      class="search-input"
+      hint="Buscar por nombre, cargo o área"
+      returnKeyType="search"
+      [(ngModel)]="consulta"
+      (returnPress)="onReturnPress($event)"
+    ></TextField>
+
+    <Button col="1" class="search-button" text="Buscar" (tap)="buscar()" [isEnabled]="!cargando"></Button>
+
+    <Button
+      col="2"
+      class="fas search-clear"
+      text="&#xf00d;"
+      (tap)="limpiar()"
+      [visibility]="consulta ? 'visible' : 'collapse'"
+    ></Button>
   </GridLayout>
 
-  <Label row="2" class="search-summary" [text]="resumen"></Label>
+  <StackLayout row="1">
+    <GridLayout columns="*, auto" class="search-filter">
+      <Label col="0" class="search-filter-label" text="Buscar solo por nombre" verticalAlignment="center"></Label>
+      <Switch col="1" [(ngModel)]="soloNombre" (ngModelChange)="buscar()"></Switch>
+    </GridLayout>
 
-  <ListView row="3" class="results-list" [items]="resultados" (itemTap)="onItemTap($event)">
+    <GridLayout columns="*, auto" class="search-filter">
+      <Label col="0" class="search-filter-label" text="Solo favoritos" verticalAlignment="center"></Label>
+      <Switch col="1" [(ngModel)]="soloFavoritos"></Switch>
+    </GridLayout>
+  </StackLayout>
+
+  <Label row="2" class="search-summary" [text]="resumen" [visibility]="error ? 'collapse' : 'visible'"></Label>
+
+  <ListView
+    row="3"
+    class="results-list"
+    [items]="resultadosVisibles"
+    (itemTap)="onItemTap($event)"
+    [visibility]="!error && resultadosVisibles.length ? 'visible' : 'collapse'"
+  >
     <ng-template let-empleado="item">
       <FlexboxLayout class="result-item" flexDirection="row" alignItems="center">
         <Label class="fas result-avatar" text="&#xf007;"></Label>
@@ -38,6 +64,15 @@
           </FlexboxLayout>
         </FlexboxLayout>
 
+        <Label
+          class="result-favorito"
+          [class.fas]="esFavorito(empleado)"
+          [class.far]="!esFavorito(empleado)"
+          [class.result-favorito--activo]="esFavorito(empleado)"
+          text="&#xf005;"
+          (tap)="alternarFavorito(empleado)"
+        ></Label>
+
         <Label class="fas result-chevron" text="&#xf054;"></Label>
       </FlexboxLayout>
     </ng-template>
@@ -47,6 +82,30 @@
     row="3"
     class="search-empty"
     text="No se encontraron empleados"
-    [visibility]="resultados.length ? 'collapse' : 'visible'"
+    [visibility]="!error && !cargando && !resultadosVisibles.length ? 'visible' : 'collapse'"
   ></Label>
+
+  <StackLayout row="3" class="search-error" [visibility]="error ? 'visible' : 'collapse'">
+    <Label class="fas search-error__icon" [text]="sinConfigurar ? '&#xf013;' : '&#xf071;'"></Label>
+    <Label class="search-error__text" [text]="error" textWrap="true"></Label>
+
+    <Button
+      class="search-error__button"
+      text="Ir a Settings"
+      (tap)="irAConfiguracion()"
+      [visibility]="sinConfigurar ? 'visible' : 'collapse'"
+    ></Button>
+
+    <Button
+      class="search-error__button"
+      text="Reintentar"
+      (tap)="buscar()"
+      [visibility]="sinConfigurar ? 'collapse' : 'visible'"
+    ></Button>
+  </StackLayout>
+
+  <StackLayout row="3" class="search-loading" [visibility]="cargando ? 'visible' : 'collapse'">
+    <ActivityIndicator busy="true"></ActivityIndicator>
+    <Label class="search-loading__text" text="Consultando el servidor..."></Label>
+  </StackLayout>
 </GridLayout>

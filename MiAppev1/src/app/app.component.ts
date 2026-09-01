@@ -8,6 +8,7 @@ import {
 } from 'nativescript-ui-sidedrawer'
 import { filter } from 'rxjs/operators'
 import { Application, Color, View } from '@nativescript/core'
+import { NOMBRE_POR_DEFECTO, UsuarioService } from './usuario.service'
 
 const FAB_COLOR_NORMAL = '#4fc3f7'
 const FAB_COLOR_ACTIVO = '#ff7043'
@@ -22,11 +23,21 @@ export class AppComponent implements OnInit {
   private _activatedUrl: string
   private _sideDrawerTransition: DrawerTransitionBase
 
-  constructor(private router: Router, private routerExtensions: RouterExtensions) {}
+  nombreUsuario = ''
+
+  constructor(
+    private router: Router,
+    private routerExtensions: RouterExtensions,
+    private usuario: UsuarioService
+  ) {}
 
   ngOnInit(): void {
     this._activatedUrl = '/splash'
     this._sideDrawerTransition = new SlideInOnTopTransition()
+
+    this.usuario.nombre$.subscribe((nombre) => {
+      this.nombreUsuario = nombre || NOMBRE_POR_DEFECTO
+    })
 
     this.router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))

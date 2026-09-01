@@ -1,20 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { Application, Dialogs, isAndroid, ItemEventData } from '@nativescript/core';
 import { Toasty, ToastDuration, ToastPosition } from '@triniwiz/nativescript-toasty';
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 import { RouterExtensions } from '@nativescript/angular';
 import { PullToRefresh } from '@nativescript-community/ui-pulltorefresh';
-import { AREAS, CARGOS, EmpleadoService, Empleado } from '../empleado.service';
+import { filter } from 'rxjs/operators';
+
+import { AREAS, CARGOS, Empleado } from '../empleado.service';
+import { EmpleadoApiService, ERROR_SIN_CONFIGURAR, NuevoEmpleado } from '../empleado-api.service';
 
 @Component({
   selector: 'ns-empleado-list',
   template: `
     <ActionBar class="action-bar">
       <NavigationButton visibility="hidden"></NavigationButton>
-      <GridLayout columns="50, *">
-        <Label class="action-bar-title" text="Empleados" colSpan="2"></Label>
+      <GridLayout columns="50, *, 50">
+        <Label class="action-bar-title" text="Empleados" colSpan="3"></Label>
 
-        <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+        <Label col="0" class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+        <Label col="2" class="fas action-bar-nuevo" text="&#xf067;" (tap)="onNuevoTap()"></Label>
       </GridLayout>
     </ActionBar>
 
@@ -42,6 +47,17 @@ import { AREAS, CARGOS, EmpleadoService, Empleado } from '../empleado.service';
           </ng-template>
         </ListView>
       </PullToRefresh>
+
+      <StackLayout row="1" class="lista-estado" [visibility]="cargando ? 'visible' : 'collapse'">
+        <ActivityIndicator busy="true"></ActivityIndicator>
+        <Label class="lista-estado-texto" text="Consultando el servidor..." textWrap="true"></Label>
+      </StackLayout>
+
+      <StackLayout row="1" class="lista-estado" [visibility]="error ? 'visible' : 'collapse'">
+        <Label class="fas lista-estado-icono" text="&#xf071;"></Label>
+        <Label class="lista-estado-texto" [text]="error" textWrap="true"></Label>
+        <Button class="lista-estado-boton" text="Reintentar" (tap)="cargar()"></Button>
+      </StackLayout>
     </GridLayout>
   `,
   styleUrls: ['./empleado-list.component.css'],
@@ -50,30 +66,66 @@ export class EmpleadoListComponent implements OnInit {
   empleados: Empleado[] = [];
   platformMessage: string = 'Ejecutando en entorno general';
 
+  cargando = false;
+  error = '';
+
   constructor(
-    private empleadoService: EmpleadoService,
-    private routerExtensions: RouterExtensions
+    private empleadoApi: EmpleadoApiService,
+    private routerExtensions: RouterExtensions,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.empleados = this.empleadoService.getEmpleados();
-
     if (isAndroid) {
       this.platformMessage = 'Listado de Empleados · desliza para actualizar';
     }
+
+    this.cargar();
+
+    this.router.events
+      .pipe(filter((evento: any) => evento instanceof NavigationEnd))
+      .subscribe((evento: NavigationEnd) => {
+        if (evento.urlAfterRedirects === '/empleados') {
+          this.cargar();
+        }
+      });
+  }
+
+  cargar(): void {
+    this.cargando = true;
+    this.error = '';
+
+    this.empleadoApi.listar().subscribe({
+      next: (respuesta) => {
+        this.empleados = respuesta.datos;
+        this.cargando = false;
+      },
+      error: (error) => {
+        this.empleados = [];
+        this.cargando = false;
+        this.error = this.describirError(error);
+      },
+    });
+  }
+
+  onNuevoTap(): void {
+    this.routerExtensions.navigate(['/empleados/nuevo']);
   }
 
   onRefresh(args: any): void {
     const pullToRefresh = args.object as PullToRefresh;
 
-    this.empleadoService
-      .refrescarEmpleados()
-      .then((empleados) => {
-        this.empleados = empleados;
-      })
-      .finally(() => {
+    this.empleadoApi.listar().subscribe({
+      next: (respuesta) => {
+        this.empleados = respuesta.datos;
+        this.error = '';
         pullToRefresh.refreshing = false;
-      });
+      },
+      error: (error) => {
+        this.error = this.describirError(error);
+        pullToRefresh.refreshing = false;
+      },
+    });
   }
 
   onEditarTap(empleado: Empleado): void {
@@ -138,15 +190,40 @@ export class EmpleadoListComponent implements OnInit {
     });
   }
 
-  private aplicarCambio(empleado: Empleado, cambios: Partial<Empleado>): void {
-    this.empleadoService.actualizarEmpleado(empleado.id, cambios);
-    this.empleados = this.empleadoService.getEmpleados();
+  private aplicarCambio(empleado: Empleado, cambios: Partial<NuevoEmpleado>): void {
+    this.empleadoApi.actualizar(empleado.id, cambios).subscribe({
+      next: () => {
+        this.cargar();
+        this.avisar('Información actualizada exitosamente');
+      },
+      error: (error) => {
+        this.avisar(this.describirError(error));
+      },
+    });
+  }
 
+  private avisar(texto: string): void {
     new Toasty({
-      text: 'Información actualizada exitosamente',
+      text: texto,
       duration: ToastDuration.SHORT,
       position: ToastPosition.BOTTOM,
     }).show();
+  }
+
+  private describirError(error: any): string {
+    if (error?.message === ERROR_SIN_CONFIGURAR) {
+      return 'No has configurado la URL del servidor. Ve a Settings.';
+    }
+
+    if (error?.error?.error) {
+      return error.error.error;
+    }
+
+    if (!error?.status) {
+      return 'No se pudo conectar con el servidor. Verifica que el backend esté arriba.';
+    }
+
+    return `El servidor respondió con un error (${error.status}).`;
   }
 
   onItemTap(args: ItemEventData): void {

@@ -2,7 +2,7 @@
   <GridLayout tkDrawerContent rows="auto, *" class="nt-drawer__content">
     <StackLayout row="0" class="nt-drawer__header">
       <Image class="nt-drawer__header-image fas t-36" src="font://&#xf2bd;"></Image>
-      <Label class="nt-drawer__header-brand" text="User Name"></Label>
+      <Label class="nt-drawer__header-brand" [text]="nombreUsuario"></Label>
       <Label class="nt-drawer__header-footnote" text="jesus.quintero1@ukuepa.com"></Label>
     </StackLayout>
 
@@ -56,6 +56,26 @@
         >
           <Label col="0" text="&#xf007;" class="nt-icon fas"></Label>
           <Label col="1" text="Empleados" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/favoritos')"
+          (tap)="onNavItemTap('/favoritos')"
+        >
+          <Label col="0" text="&#xf005;" class="nt-icon fas"></Label>
+          <Label col="1" text="Favoritos" class="p-r-10"></Label>
+        </GridLayout>
+
+        <GridLayout
+          columns="auto, *"
+          class="nt-drawer__list-item"
+          [class.-selected]="isComponentSelected('/perfil')"
+          (tap)="onNavItemTap('/perfil')"
+        >
+          <Label col="0" text="&#xf2bd;" class="nt-icon fas"></Label>
+          <Label col="1" text="Perfil" class="p-r-10"></Label>
         </GridLayout>
 
         <StackLayout class="hr"></StackLayout>

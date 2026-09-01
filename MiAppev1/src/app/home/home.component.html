@@ -7,7 +7,109 @@
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout rows="auto, auto, *" class="page__content">
+  <StackLayout row="0" class="inicio">
+    <Label class="inicio__titulo" text="Leyendo ahora"></Label>
+
+    <StackLayout class="inicio__tarjeta" [visibility]="leyendoAhora ? 'visible' : 'collapse'">
+      <GridLayout rows="auto, auto" columns="auto, *" *ngIf="leyendoAhora">
+        <Label row="0" rowSpan="2" col="0" class="inicio__emoji" text="📖" verticalAlignment="center"></Label>
+
+        <Label row="0" col="1" class="inicio__nombre" [text]="leyendoAhora.name" textWrap="true"></Label>
+        <Label
+          row="1"
+          col="1"
+          class="inicio__cargo"
+          [text]="leyendoAhora.cargo + ' · ' + leyendoAhora.area"
+          textWrap="true"
+        ></Label>
+      </GridLayout>
+
+      <GridLayout columns="*, *" class="inicio__acciones">
+        <Button col="0" class="inicio__boton" text="Ver detalle" (tap)="verDetalle()"></Button>
+        <Button
+          col="1"
+          class="inicio__boton inicio__boton--secundario"
+          text="Dejar de leer"
+          (tap)="dejarDeLeer()"
+        ></Button>
+      </GridLayout>
+    </StackLayout>
+
+    <StackLayout class="inicio__sin-lectura" [visibility]="leyendoAhora ? 'collapse' : 'visible'">
+      <Label
+        class="inicio__sin-lectura-texto"
+        text="No estás leyendo nada en este momento."
+        textWrap="true"
+      ></Label>
+    </StackLayout>
+  </StackLayout>
+
+  <GridLayout row="1" columns="*, auto" class="historial__encabezado">
+    <Label
+      col="0"
+      class="historial__titulo"
+      [text]="'Leídos (' + (total$ | async) + ')'"
+      verticalAlignment="center"
+    ></Label>
+
+    <Button
+      col="1"
+      class="historial__limpiar"
+      text="Limpiar"
+      (tap)="limpiar()"
+      [visibility]="(total$ | async) ? 'visible' : 'collapse'"
+    ></Button>
+  </GridLayout>
+
+  <ListView
+    row="2"
+    class="historial__lista"
+    [items]="historial$ | async"
+    (itemTap)="onItemTap($event)"
+    [visibility]="(total$ | async) ? 'visible' : 'collapse'"
+  >
+    <ng-template let-empleado="item">
+      <GridLayout rows="auto, auto" columns="auto, *, auto" class="historial__item">
+        <Label row="0" rowSpan="2" col="0" class="historial__emoji" text="📖" verticalAlignment="center"></Label>
+
+        <Label row="0" col="1" class="historial__nombre" [text]="empleado.name" textWrap="true"></Label>
+        <Label
+          row="1"
+          col="1"
+          class="historial__cargo"
+          [text]="empleado.cargo + ' · ' + empleado.area"
+          textWrap="true"
+        ></Label>
+
+        <Label
+          row="0"
+          rowSpan="2"
+          col="2"
+          class="fas historial__quitar"
+          text="&#xf00d;"
+          verticalAlignment="center"
+          (tap)="quitar(empleado)"
+        ></Label>
+
+        <Label
+          row="1"
+          col="2"
+          class="historial__actual"
+          text="actual"
+          [visibility]="estaLeyendo(empleado) ? 'visible' : 'collapse'"
+        ></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+
+  <StackLayout row="2" class="historial__vacio" [visibility]="(total$ | async) ? 'collapse' : 'visible'">
+    <Label class="historial__emoji-vacio" text="📖"></Label>
+    <Label
+      class="historial__vacio-texto"
+      text="Todavía no has presionado 📖 Leer ahora. Ve a Favoritos y presiónalo en alguno."
+      textWrap="true"
+    ></Label>
+    <Button class="inicio__boton" text="Ir a Favoritos" (tap)="irAFavoritos()"></Button>
+  </StackLayout>
 </GridLayout>

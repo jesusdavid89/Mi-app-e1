@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application, ItemEventData, SearchBar } from '@nativescript/core'
+import { Application, ItemEventData, TextField } from '@nativescript/core'
 import { RouterExtensions } from '@nativescript/angular'
-import { Empleado, EmpleadoService } from '../empleado.service'
+import { Toasty, ToastDuration, ToastPosition } from '@triniwiz/nativescript-toasty'
+import { Empleado } from '../empleado.service'
+import { EmpleadoApiService, ERROR_SIN_CONFIGURAR, FiltrosEmpleado } from '../empleado-api.service'
+import { ConfiguracionService } from '../configuracion.service'
+import { FavoritosService } from '../favoritos.service'
 
 @Component({
   selector: 'Search',
@@ -11,12 +15,26 @@ import { Empleado, EmpleadoService } from '../empleado.service'
 })
 export class SearchComponent implements OnInit {
   consulta = ''
+
   soloNombre = false
+
+  soloFavoritos = false
 
   resultados: Empleado[] = []
 
+  cargando = false
+  error = ''
+
+  private consultaAplicada = ''
+
+  private tapEnEstrella = 0
+
+  sinConfigurar = false
+
   constructor(
-    private empleadoService: EmpleadoService,
+    private empleadoApi: EmpleadoApiService,
+    private configuracion: ConfiguracionService,
+    private favoritos: FavoritosService,
     private routerExtensions: RouterExtensions
   ) {}
 
@@ -24,33 +42,115 @@ export class SearchComponent implements OnInit {
     this.buscar()
   }
 
-  get resumen(): string {
-    const total = this.resultados.length
-    const consulta = this.consulta.trim()
+  get resultadosVisibles(): Empleado[] {
+    if (!this.soloFavoritos) {
+      return this.resultados
+    }
 
-    if (!consulta) {
+    return this.resultados.filter((empleado) => this.favoritos.esFavorito(empleado.id))
+  }
+
+  esFavorito(empleado: Empleado): boolean {
+    return this.favoritos.esFavorito(empleado.id)
+  }
+
+  alternarFavorito(empleado: Empleado): void {
+    this.tapEnEstrella = Date.now()
+
+    const quedoMarcado = this.favoritos.alternar(empleado.id)
+
+    this.avisar(quedoMarcado ? `${empleado.name} agregado a favoritos` : `${empleado.name} quitado de favoritos`)
+  }
+
+  get resumen(): string {
+    const total = this.resultadosVisibles.length
+
+    if (!this.consultaAplicada) {
       return `${total} empleado(s) en total`
     }
 
-    return `${total} resultado(s) para "${consulta}"`
+    return `${total} resultado(s) para "${this.consultaAplicada}"`
   }
 
   buscar(): void {
-    this.resultados = this.empleadoService.buscarEmpleados(this.consulta, this.soloNombre)
+    const consulta = this.consulta.trim()
+    const filtros: FiltrosEmpleado = {}
+
+    if (consulta) {
+      if (this.soloNombre) {
+        filtros.nombre = consulta
+      } else {
+        filtros.q = consulta
+      }
+    }
+
+    this.cargando = true
+    this.error = ''
+    this.sinConfigurar = false
+
+    this.empleadoApi.listar(filtros).subscribe({
+      next: (respuesta) => {
+        this.resultados = respuesta.datos
+        this.consultaAplicada = consulta
+        this.cargando = false
+      },
+      error: (error) => {
+        this.resultados = []
+        this.consultaAplicada = consulta
+        this.cargando = false
+        this.error = this.describirError(error)
+      },
+    })
   }
 
-  onSubmit(args: any): void {
-    const searchBar = args.object as SearchBar
-    searchBar.dismissSoftInput()
+  limpiar(): void {
+    this.consulta = ''
+    this.buscar()
+  }
+
+  onReturnPress(args: any): void {
+    const campo = args.object as TextField
+    campo.dismissSoftInput()
+    this.buscar()
   }
 
   onItemTap(args: ItemEventData): void {
-    const empleado = this.resultados[args.index]
+    if (Date.now() - this.tapEnEstrella < 500) {
+      return
+    }
+
+    const empleado = this.resultadosVisibles[args.index]
     this.routerExtensions.navigate(['/empleados', empleado.id])
+  }
+
+  private avisar(texto: string): void {
+    new Toasty({
+      text: texto,
+      duration: ToastDuration.SHORT,
+      position: ToastPosition.BOTTOM,
+    }).show()
   }
 
   onDrawerButtonTap(): void {
     const sideDrawer = <RadSideDrawer>Application.getRootView()
     sideDrawer.showDrawer()
+  }
+
+  irAConfiguracion(): void {
+    this.routerExtensions.navigate(['/settings'])
+  }
+
+  private describirError(error: any): string {
+    if (error?.message === ERROR_SIN_CONFIGURAR) {
+      this.sinConfigurar = true
+
+      return 'Aun no has configurado la URL del servidor.\nVe a Settings y pega la URL de ngrok.'
+    }
+
+    if (error?.status === 0 || !error?.status) {
+      return `No se pudo conectar con ${this.configuracion.obtenerUrl()}.\nVerifica que el backend y el tunel de ngrok esten arriba.`
+    }
+
+    return error?.error?.error || `El servidor respondio con un error (${error.status}).`
   }
 }
