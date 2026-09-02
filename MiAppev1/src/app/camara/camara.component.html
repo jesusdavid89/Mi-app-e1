@@ -1,0 +1,75 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Camara" colSpan="2"></Label>
+
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<ScrollView class="page__content">
+  <StackLayout class="camara">
+    <Label class="camara__titulo" text="Tomar y compartir"></Label>
+    <Label
+      class="camara__ayuda"
+      text="Toma una foto, escribe un texto y compartelos con cualquier app del dispositivo."
+      textWrap="true"
+    ></Label>
+
+    <Button
+      class="camara__boton"
+      text="Tomar foto"
+      (tap)="tomarFoto()"
+      [isEnabled]="!ocupado"
+    ></Button>
+
+    <Label class="camara__etiqueta" text="Previsualizacion"></Label>
+
+    <StackLayout class="camara__marco">
+      <Image
+        *ngIf="hayFoto"
+        class="camara__imagen"
+        [src]="foto"
+        stretch="aspectFit"
+      ></Image>
+
+      <Label
+        *ngIf="!hayFoto"
+        class="camara__marcador"
+        text="Aun no hay foto"
+        textWrap="true"
+      ></Label>
+    </StackLayout>
+
+    <Button
+      *ngIf="hayFoto"
+      class="camara__boton camara__boton--peligro"
+      text="Descartar foto"
+      (tap)="descartarFoto()"
+      [isEnabled]="!ocupado"
+    ></Button>
+
+    <Label class="camara__etiqueta" text="Texto a compartir"></Label>
+
+    <TextField
+      class="camara__input"
+      hint="Escribe algo para acompanar la foto"
+      autocapitalizationType="sentences"
+      [(ngModel)]="texto"
+    ></TextField>
+
+    <Button
+      class="camara__boton camara__boton--secundario"
+      text="Compartir imagen"
+      (tap)="compartirImagen()"
+      [isEnabled]="hayFoto && !ocupado"
+    ></Button>
+
+    <Button
+      class="camara__boton camara__boton--secundario"
+      text="Compartir texto"
+      (tap)="compartirTexto()"
+      [isEnabled]="hayTexto && !ocupado"
+    ></Button>
+  </StackLayout>
+</ScrollView>

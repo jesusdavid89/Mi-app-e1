@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "635171059747",
+    "project_id": "couseraapp",
+    "storage_bucket": "couseraapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635171059747:android:5fda089260ab4233c31996",
+        "android_client_info": {
+          "package_name": "cousera.jq.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcAaKVHq0QVQpDycEYQ2iWIxy8nGEdsLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635171059747:android:31d2a4ae3bfb5acbc31996",
+        "android_client_info": {
+          "package_name": "org.nativescript.MiAppev1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcAaKVHq0QVQpDycEYQ2iWIxy8nGEdsLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

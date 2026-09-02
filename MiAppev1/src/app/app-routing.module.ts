@@ -33,6 +33,14 @@ const routes: Routes = [
     loadChildren: () => import('~/app/perfil/perfil.module').then((m) => m.PerfilModule),
   },
   {
+    path: 'camara',
+    loadChildren: () => import('~/app/camara/camara.module').then((m) => m.CamaraModule),
+  },
+  {
+    path: 'mapa',
+    loadChildren: () => import('~/app/mapa/mapa.module').then((m) => m.MapaModule),
+  },
+  {
     path: 'settings',
     loadChildren: () => import('~/app/settings/settings.module').then((m) => m.SettingsModule),
   },

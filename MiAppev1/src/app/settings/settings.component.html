@@ -76,5 +76,27 @@
     ></Button>
 
     <Button class="config__boton config__boton--peligro" text="Borrar URL" (tap)="borrar()"></Button>
+
+    <StackLayout class="hr"></StackLayout>
+
+    <Label class="config__titulo config__titulo--seccion" text="Notificaciones"></Label>
+    <Label
+      class="config__ayuda"
+      text="Copia este token y pegalo en la Consola de Firebase, en Messaging, opcion Enviar mensaje de prueba."
+      textWrap="true"
+    ></Label>
+
+    <Label class="config__etiqueta" text="Permiso"></Label>
+    <Label class="config__valor" [text]="permisoTexto" textWrap="true"></Label>
+
+    <Label class="config__etiqueta" text="Token FCM"></Label>
+    <Label class="config__valor" [text]="tokenTexto" textWrap="true"></Label>
+
+    <Button
+      class="config__boton config__boton--secundario"
+      text="Copiar token"
+      (tap)="copiarToken()"
+      [isEnabled]="hayToken"
+    ></Button>
   </StackLayout>
 </ScrollView>

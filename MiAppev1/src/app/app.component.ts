@@ -9,6 +9,8 @@ import {
 import { filter } from 'rxjs/operators'
 import { Application, Color, View } from '@nativescript/core'
 import { NOMBRE_POR_DEFECTO, UsuarioService } from './usuario.service'
+import { NotificacionesService } from './notificaciones.service'
+
 
 const FAB_COLOR_NORMAL = '#4fc3f7'
 const FAB_COLOR_ACTIVO = '#ff7043'
@@ -28,7 +30,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private routerExtensions: RouterExtensions,
-    private usuario: UsuarioService
+    private usuario: UsuarioService,
+    private notificaciones: NotificacionesService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +45,8 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter((event: any) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => (this._activatedUrl = event.urlAfterRedirects))
+
+    this.notificaciones.inicializar()
   }
 
   get sideDrawerTransition(): DrawerTransitionBase {

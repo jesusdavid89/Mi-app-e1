@@ -1,0 +1,29 @@
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="action-bar-title" text="Mapa" colSpan="2"></Label>
+
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout rows="*, auto" class="mapa">
+  <WebView
+    row="0"
+    class="mapa__vista"
+    [src]="src"
+    (loadFinished)="onLoadFinished($event)"
+  ></WebView>
+
+  <StackLayout row="1" class="mapa__pie">
+    <Label class="mapa__etiqueta" text="Ubicacion del marcador"></Label>
+    <Label class="mapa__valor" [text]="tituloCoordenada" textWrap="true"></Label>
+
+    <Label
+      class="mapa__error"
+      [text]="error"
+      textWrap="true"
+      [visibility]="error ? 'visible' : 'collapse'"
+    ></Label>
+  </StackLayout>
+</GridLayout>

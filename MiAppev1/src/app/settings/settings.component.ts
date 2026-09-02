@@ -6,6 +6,7 @@ import { Toasty, ToastDuration, ToastPosition } from '@triniwiz/nativescript-toa
 import { ConfiguracionService, URL_EMULADOR } from '../configuracion.service'
 import { UsuarioService } from '../usuario.service'
 import { EmpleadoApiService } from '../empleado-api.service'
+import { EstadoPermiso, NotificacionesService } from '../notificaciones.service'
 
 @Component({
   selector: 'Settings',
@@ -23,10 +24,14 @@ export class SettingsComponent implements OnInit {
 
   nombreGuardado = ''
 
+  tokenFcm = ''
+  estadoPermiso: EstadoPermiso = 'pendiente'
+
   constructor(
     private configuracion: ConfiguracionService,
     private empleadoApi: EmpleadoApiService,
-    private usuario: UsuarioService
+    private usuario: UsuarioService,
+    private notificaciones: NotificacionesService
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +40,14 @@ export class SettingsComponent implements OnInit {
 
     this.usuario.nombre$.subscribe((nombre) => {
       this.nombreGuardado = nombre
+    })
+
+    this.notificaciones.token$.subscribe((token) => {
+      this.tokenFcm = token
+    })
+
+    this.notificaciones.estadoPermiso$.subscribe((estado) => {
+      this.estadoPermiso = estado
     })
   }
 
@@ -105,6 +118,30 @@ export class SettingsComponent implements OnInit {
   onDrawerButtonTap(): void {
     const sideDrawer = <RadSideDrawer>Application.getRootView()
     sideDrawer.showDrawer()
+  }
+
+  get tokenTexto(): string {
+    return this.tokenFcm ? this.tokenFcm : 'Sin token todavia'
+  }
+
+  get permisoTexto(): string {
+    if (this.estadoPermiso === 'concedido') {
+      return 'Concedido'
+    }
+
+    if (this.estadoPermiso === 'denegado') {
+      return 'Denegado. Habilitalo en los ajustes de Android.'
+    }
+
+    return 'Pendiente'
+  }
+
+  get hayToken(): boolean {
+    return this.tokenFcm !== ''
+  }
+
+  copiarToken(): void {
+    this.avisar(this.notificaciones.copiarToken() ? 'Token copiado' : 'No se pudo copiar el token')
   }
 
   private avisar(texto: string): void {
